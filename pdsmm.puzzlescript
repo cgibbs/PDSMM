@@ -1,0 +1,293 @@
+title Pls Don't Sue Me Microsoft
+author Chanse M
+homepage www.puzzlescript.net
+
+
+(The premise of the game is that you have to ignite all
+ Redstone blocks by connecting them to an Igniter block.
+ Once ignited, a Redstone block is immobilized. There 
+ are also Crates that you can push into Holes to fill 
+ them, because what kind of Sokoban game would it be
+ without crates?)
+
+(A disaster of a game, that's what kind.)
+
+
+========
+OBJECTS
+========
+
+Background
+green
+
+Wall
+brown darkbrown
+00010
+11111
+01000
+11111
+00010
+
+Player
+PINK YELLOW #000000    
+.222.
+.000.
+22122
+.222.
+.2.2.
+
+Redstone
+gray
+
+(immobile, redstone that touches this will become ignited)
+IgnitedRedstone
+red 
+
+(immobile, redstone that touches this will become ignited)
+Igniter
+yellow red
+00000
+00000
+00100
+00000
+00000
+
+Hole
+darkbrown
+
+(can be pushed into holes to make walkable ground)
+Crate
+orange yellow
+00000
+00110
+01010
+01100
+00000
+
+Door
+brown orange
+.000.
+01110
+00000
+01110
+00000
+
+(When connected to ignited redstone, removes all doors on map)
+Unlocker
+blue transparent
+00000
+01110
+00000
+11011
+00011
+
+UnlockerActive
+lightblue transparent
+00000
+01110
+00000
+11011
+00011
+
+(explodes when connected to ignited redstone or when in the explosion area of another bomb)
+Bomb
+black yellow orange transparent
+31133
+33233
+00000
+00000
+00000
+
+ActiveBomb
+black yellow orange transparent
+31133
+33233
+00000
+01110
+00000
+
+(only the player can move through this tile)
+POnlyFloor
+blue lightblue white
+00000
+01110
+01210
+01110
+00000
+
+=======
+LEGEND
+=======
+
+. = Background
+# = Wall
+P = Player
+r = Redstone
+I = Igniter
+J = IgnitedRedstone
+h = Hole
+c = Crate
+d = Door
+u = Unlocker
+b = Bomb
+o = POnlyFloor
+
+Movables = Crate or Redstone or Bomb
+
+=======
+SOUNDS
+=======
+
+================
+COLLISIONLAYERS
+================
+
+Background 
+Hole
+POnlyFloor
+Player, Wall, Crate, Redstone, IgnitedRedstone, Igniter, Door, Unlocker, UnlockerActive, Bomb, ActiveBomb
+
+======
+RULES
+======
+
+[ > Player | movables ] -> [ > Player | > movables ]
+[ > Redstone | Hole ] -> cancel
+[ > Player | Hole ] -> cancel
+[ > movables | POnlyFloor] -> cancel
+late [ Crate Hole ] -> [ Background ]
+late [ Igniter | Redstone ] -> [ Igniter | IgnitedRedstone ]
+late [ IgnitedRedstone | Redstone ] -> [ IgnitedRedstone | IgnitedRedstone ]
+(late [ IgnitedRedstone | Unlocker ] [Door] -> [ IgnitedRedstone | UnlockerActive] [])
+late [ IgnitedRedstone | Unlocker ] -> [ IgnitedRedstone | UnlockerActive]
++ late [ UnlockerActive ] [door] -> [ UnlockerActive] []
+late [ IgnitedRedstone | bomb ] -> [ IgnitedRedstone | ActiveBomb ]
++ late [ ActiveBomb | bomb ] -> [ ActiveBomb | ActiveBomb ]
++ late [ ActiveBomb | wall ] -> [ ActiveBomb | Background ] 
++ late [ ActiveBomb ] -> [ Background ]
+
+
+
+==============
+WINCONDITIONS
+==============
+
+NO Redstone
+
+=======
+LEVELS
+=======
+
+#########
+#.......#
+#.......#
+#...#I..#
+#.P.RHC.#
+#....R..#
+#.......#
+#.......#
+#########
+
+#########
+#.......#
+#.......#
+#...#I..#
+#.P.RHC.#
+#..R....#
+#...#R#.#
+#....H..#
+#########
+
+##########
+#..#..I..#
+#..R.CH..#
+#..#..R..#
+#.P.RHC..#
+#.RR#....#
+#...#R#..#
+#....H...#
+#..H.CH..#
+##########
+
+#########
+#.......#
+#.......#
+#...#I..#
+#.P.RHC.#
+###DDU###
+#...R...#
+#.......#
+#########
+
+###########
+#i#.#.....#
+#.rh#r....#
+#r#h#.r.i.#
+#u#.#..r.r#
+###.#.r.r.#
+#.cc###r.r#
+#.....#...#
+#.p...d...#
+#.....d...#
+###########
+
+###########
+#.........#
+#..r.r....#
+#.........#
+######....#
+#....##...#
+#i.rrbb####
+#.r..##...#
+#.p.......#
+#.........#
+###########
+
+############
+####i...r.u#
+#i##j...rr.#
+#drd#r..#..#
+#rdd.....#.#
+#.....r....#
+#rrr#...#..#
+#.p.#####r.#
+#####...#..#
+#.......####
+############
+
+#############
+#.......#...#
+#.......oc..#
+#.i....ph.c.#
+#..r....hr..#
+##r##o###o###
+#....r.o.r.##
+#.r#....r..##
+#.or..o.rro##
+#..#..o.oo.##
+#############
+
+############
+##.r.ro#ii.#
+##.........#
+##..po.hcr.#
+####r#oh...#
+#..r.#o..###
+#....#.....#
+#.r..#...r.#
+#...i#..r..#
+#....o.....#
+############
+
+############
+##iiiiiiii##
+#i...h....i#
+#i...h....i#
+##..r##hrh##
+#i.c.rr#...#
+###ooooic..#
+##..i#c....#
+##.r...co.##
+##....p.h.##
+#######o..##
+############
