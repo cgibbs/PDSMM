@@ -12,6 +12,9 @@ homepage www.puzzlescript.net
 
 (A disaster of a game, that's what kind.)
 
+(Note for later: putting an extra player in a walled-in area next
+ to a hole means the player can't move in that direction; can a 
+ puzzle work in this framework with one of the directions disabled?)
 
 ========
 OBJECTS
@@ -305,3 +308,25 @@ LEVELS
 ##rrbb#r.##
 #ur#oo...##
 ###########
+
+##################
+#########..#....##
+##pcpcp##..#b.r.##
+##ccccc#i..#..r.##
+##cpcpc##.r#r.r.##
+###########o.r...#
+##########.b.or..#
+#..p...i##...ror.#
+#.....r.rdr...r..#
+####o##r####o#####
+#..rcchhu#.....#o#
+#..r..och..ror.#c#
+#....#...d.....#o#
+###.###dd#.....#c#
+#r#d#ror.###r#####
+#hc.chh..##i.rrrr#
+#....oo..#######r#
+#.r.rc...#rrrrr#r#
+#..r.rro.#r#####r#
+#i.......#rrrrrrr#
+##################
